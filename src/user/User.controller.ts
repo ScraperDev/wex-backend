@@ -5,7 +5,7 @@ import asyncHandler from 'express-async-handler';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { User } from '.';
-import { EmailTakenError } from '../errors';
+import { EmailTakenError, WeakPasswordError } from '../errors';
 import { CreateUserDto, LoginUserDto } from './dtos';
 import { validationMiddleware } from '../middleware';
 import { Controller, TokenData } from '../interfaces';
@@ -28,6 +28,8 @@ export class UserController implements Controller {
       const userData: CreateUserDto = req.body;
       if (await this.userRepo.findOne({ email: userData.email })) {
         next(new EmailTakenError(userData.email));
+      } else if (userData.password.length < 8) {
+        next(new WeakPasswordError());
       } else {
         const hashedPassword = await hash(userData.password, 10);
         const user = this.userRepo.create({
