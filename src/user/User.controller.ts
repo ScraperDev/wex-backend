@@ -5,8 +5,8 @@ import asyncHandler from 'express-async-handler';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { User } from '.';
-import { CreateUserDto, LoginUserDto } from './dtos';
 import { validationMiddleware } from '../middleware';
+import { CreateUserDto, LoginUserDto } from './dtos';
 import { Controller, TokenData } from '../interfaces';
 import { EmailTakenError, WeakPasswordError, WrongCredsError } from '../errors';
 
@@ -21,6 +21,7 @@ export class UserController implements Controller {
 
   private initializeRoutes(): void {
     this.router.post(`${this.path}/register`, validationMiddleware(CreateUserDto), this.register);
+    this.router.post(`${this.path}/login`, validationMiddleware(LoginUserDto), this.login);
   }
 
   private register = asyncHandler(
