@@ -2,6 +2,17 @@
   "name": "wex-server",
   "version": "0.1.0",
   "license": "UNLICENSED",
+  "scripts": {
+    "dev": "tsnd src/index.ts"
+  },
+  "dependencies": {
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.12.2",
+    "cors": "^2.8.5",
+    "envalid": "^6.0.1",
+    "express": "^4.17.1",
+    "reflect-metadata": "^0.1.13"
+  },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.6",
