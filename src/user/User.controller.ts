@@ -1,4 +1,4 @@
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { getRepository } from 'typeorm';
 import { sign as signJwt } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
@@ -38,6 +38,20 @@ export class UserController implements Controller {
         user.password = undefined;
         const token = this.createToken(user);
         res.send({ user, token });
+      }
+    }
+  );
+
+  private login = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+      const loginData: LoginUserDto = req.body;
+      const user = await this.userRepo.findOne({ email: loginData.email });
+      if (user && (await compare(loginData.password, user.password))) {
+        user.password = undefined;
+        const token = this.createToken(user);
+        res.send({ user, token });
+      } else {
+        next(new WrongCredentialsError());
       }
     }
   );
