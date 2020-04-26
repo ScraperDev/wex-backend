@@ -26,7 +26,9 @@ export class App {
   private initializeGlobalMiddleware(): void {
     this.app.use(cors());
     this.app.use(json());
-    this.app.use(morgan('dev'));
+    if (process.env.NODE_ENV === 'development') {
+      this.app.use(morgan('dev'));
+    }
   }
 
   private initializeErrorHandling(): void {
