@@ -1,11 +1,12 @@
 import { hash } from 'bcrypt';
 import { getRepository } from 'typeorm';
+import { sign as signJwt } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { User } from '.';
 import { Controller } from '../interfaces';
-import {} from '../errors';
+import { EmailTakenError } from '../errors';
 import { CreateUserDto, LoginUserDto } from './dtos';
 
 export class UserController implements Controller {
@@ -37,4 +38,14 @@ export class UserController implements Controller {
       }
     }
   );
+
+  private createToken(user: User): string {
+    const expiresIn = 60 * 60 * 24; // One Day
+    const secret = process.env.JWT_SECRET;
+    const dataStoredInToken: TokenData = {
+      id: user.id,
+      name: user.name,
+    };
+    return signJwt(dataStoredInToken, secret, { expiresIn });
+  }
 }
