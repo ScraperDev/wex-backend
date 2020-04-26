@@ -5,10 +5,10 @@ import asyncHandler from 'express-async-handler';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { User } from '.';
-import { EmailTakenError, WeakPasswordError } from '../errors';
 import { CreateUserDto, LoginUserDto } from './dtos';
 import { validationMiddleware } from '../middleware';
 import { Controller, TokenData } from '../interfaces';
+import { EmailTakenError, WeakPasswordError, WrongCredsError } from '../errors';
 
 export class UserController implements Controller {
   public path = '/user';
@@ -53,7 +53,7 @@ export class UserController implements Controller {
         const token = this.createToken(user);
         res.send({ user, token });
       } else {
-        next(new WrongCredentialsError());
+        next(new WrongCredsError());
       }
     }
   );
