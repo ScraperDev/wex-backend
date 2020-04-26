@@ -1,2 +1,2 @@
-export { Router } from './Router.interface';
+export { Controller } from './Controller.interface';
 export { TokenData } from './TokenData.interface';
