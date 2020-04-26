@@ -11,6 +11,7 @@ import { AuthController } from './auth';
   loadEnv();
   validateEnv();
 
+  // if this throws, the app's dead in the water anyway.
   await createConnection(ormConfig);
   console.log('Database Connected');
   const app = new App([new AuthController()]);
