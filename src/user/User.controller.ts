@@ -1,7 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import { getRepository } from 'typeorm';
 import { sign as signJwt } from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler';
+import * as asyncHandler from 'express-async-handler';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { User } from '.';
