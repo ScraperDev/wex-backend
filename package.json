@@ -6,6 +6,7 @@
     "dev": "tsnd src/index.ts"
   },
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
     "cors": "^2.8.5",
