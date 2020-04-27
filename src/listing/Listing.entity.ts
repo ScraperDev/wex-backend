@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn, Entity, OneToMany, ManyToOne } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity, ManyToOne } from 'typeorm';
 import { User } from '../user';
 
 @Entity()
@@ -8,6 +8,12 @@ export class Listing {
 
   @Column()
   public active: boolean;
+
+  @Column()
+  public waterType: string;
+
+  @Column()
+  public waterAvailable: Date;
 
   @Column()
   public price: number;
