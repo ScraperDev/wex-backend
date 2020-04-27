@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import * as jwt from 'jsonwebtoken';
+import { verify as verifyJwt } from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
 import { NoTokenError, InvalidTokenError } from '../errors';
 import { TokenData, RequestWithUser } from '../interfaces';
@@ -16,7 +16,7 @@ export const authMiddleware = async (
     const secret = process.env.JWT_SECRET;
     const token = headers.authorization.substring(7);
     try {
-      const verificationResponse = jwt.verify(token, secret) as TokenData;
+      const verificationResponse = verifyJwt(token, secret) as TokenData;
       const id = verificationResponse.id;
       const user = await userRepository.findOne(id);
       if (user) {
