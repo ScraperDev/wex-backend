@@ -1,3 +1,3 @@
 export { TokenData } from './TokenData.interface';
 export { Controller } from './Controller.interface';
-export { ReqWithUser } from './ReqWithUser.interface';
+export { RequestWithUser } from './RequestWithUser.interface';

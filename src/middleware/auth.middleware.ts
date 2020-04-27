@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
-import { NoAuthTokenError, WrongAuthTokenError } from '../errors';
+import { NoTokenError, InvalidTokenError } from '../errors';
 import { TokenData, RequestWithUser } from '../interfaces';
 import { User } from '../user/User.entity';
 
@@ -23,12 +23,12 @@ export const authMiddleware = async (
         req.user = user;
         next();
       } else {
-        next(new WrongAuthTokenError());
+        next(new InvalidTokenError());
       }
     } catch (error) {
-      next(new WrongAuthTokenError());
+      next(new InvalidTokenError());
     }
   } else {
-    next(new NoAuthTokenError());
+    next(new NoTokenError());
   }
 };
