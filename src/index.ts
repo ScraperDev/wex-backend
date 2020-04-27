@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 
 import { App } from './App';
 import { ormConfig, validateEnv } from './config';
+import { UserController } from './user';
 
 (async (): Promise<void> => {
   loadEnv();
@@ -12,6 +13,6 @@ import { ormConfig, validateEnv } from './config';
   // if this throws, the app's dead in the water anyway.
   await createConnection(ormConfig);
   console.log('Database Connected');
-  const app = new App([]);
+  const app = new App([new UserController()]);
   app.listen();
 })();
