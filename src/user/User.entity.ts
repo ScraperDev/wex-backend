@@ -1,5 +1,6 @@
 import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from 'typeorm';
-import { Listing } from '../listing';
+// this breaks if I use an index so I'm providing the full relative path
+import { Listing } from '../listing/Listing.entity';
 
 @Entity()
 export class User {
@@ -15,6 +16,6 @@ export class User {
   @Column()
   public password: string;
 
-  @OneToMany((type) => Listing, (listing) => listing.owner)
+  @OneToMany((type) => Listing, (listing) => listing.user)
   public listings: Listing[];
 }
