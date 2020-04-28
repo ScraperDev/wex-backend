@@ -1,5 +1,5 @@
 import { Column, PrimaryGeneratedColumn, Entity, ManyToOne } from 'typeorm';
-import { User } from '../user';
+import { User } from '../user/User.entity';
 
 @Entity()
 export class Listing {
@@ -30,5 +30,5 @@ export class Listing {
   public minVolume: number;
 
   @ManyToOne((type) => User, (user) => user.listings)
-  public owner: User;
+  public user: User;
 }

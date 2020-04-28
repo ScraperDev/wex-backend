@@ -16,6 +16,6 @@ export class User {
   @Column()
   public password: string;
 
-  @OneToMany((type) => Listing, (listing) => listing.owner)
+  @OneToMany((type) => Listing, (listing) => listing.user)
   public listings: Listing[];
 }
