@@ -5,8 +5,8 @@ import { Router, Response, NextFunction } from 'express';
 import { Listing } from '.';
 import { CreateListingDto } from './dto';
 import { RequestWithUser, Controller } from '../interfaces';
+import { MinVolumeError, ListingNotFoundError } from '../errors';
 import { authMiddleware, validationMiddleware } from '../middleware';
-import { MinVolumeError } from '../errors';
 
 export class ListingController implements Controller {
   public path = '/listing';
