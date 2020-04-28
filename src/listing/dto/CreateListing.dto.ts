@@ -1,21 +1,24 @@
-import { IsString, IsBoolean, IsDate, IsNumber } from 'class-validator';
+import { IsString, IsBoolean, IsDateString, IsPositive, IsInt } from 'class-validator';
 
 export class CreateListingDto {
   @IsString()
   public waterType: string;
 
-  @IsDate()
+  @IsDateString()
   public waterAvailable: Date;
 
-  @IsNumber()
+  @IsInt()
+  @IsPositive()
   public price: number;
 
-  @IsNumber()
+  @IsInt()
+  @IsPositive()
   public volume: number;
 
   @IsBoolean()
   public partialOk: boolean;
 
-  @IsNumber()
+  @IsInt()
+  @IsPositive()
   public minVolume: number;
 }
