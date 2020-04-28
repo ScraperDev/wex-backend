@@ -5,9 +5,9 @@ import * as asyncHandler from 'express-async-handler';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { User } from '.';
-import { validationMiddleware } from '../middleware';
 import { CreateUserDto, LoginUserDto } from './dto';
-import { Controller, TokenData } from '../interfaces';
+import { validationMiddleware, authMiddleware } from '../middleware';
+import { Controller, TokenData, RequestWithUser } from '../interfaces';
 import { EmailTakenError, WeakPasswordError, WrongCredsError } from '../errors';
 
 export class UserController implements Controller {
@@ -20,6 +20,7 @@ export class UserController implements Controller {
   }
 
   private initializeRoutes(): void {
+    this.router.get(`${this.path}`, authMiddleware, this.getUser);
     this.router.post(`${this.path}/register`, validationMiddleware(CreateUserDto), this.register);
     this.router.post(`${this.path}/login`, validationMiddleware(LoginUserDto), this.login);
   }
@@ -56,6 +57,13 @@ export class UserController implements Controller {
       } else {
         next(new WrongCredsError());
       }
+    }
+  );
+
+  private getUser = asyncHandler(
+    async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+      const { password, ...user } = req.user;
+      res.send(user);
     }
   );
 
