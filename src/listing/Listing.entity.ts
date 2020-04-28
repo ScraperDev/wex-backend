@@ -29,6 +29,6 @@ export class Listing {
   @Column()
   public minVolume: number;
 
-  @ManyToOne((type) => User, (user) => user.listings)
-  public user: User;
+  @ManyToOne((type) => User, (owner) => owner.listings)
+  public owner: User;
 }

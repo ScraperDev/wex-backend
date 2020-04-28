@@ -35,6 +35,7 @@ export class ListingController implements Controller {
   private createListing = asyncHandler(
     async (req: RequestWithUser, res: Response, _next: NextFunction): Promise<void> => {
       const listingData: CreateListingDto = req.body;
+      this.listingRepo.create({ ...listingData, owner: req.user });
     }
   );
 }
