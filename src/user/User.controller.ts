@@ -61,7 +61,7 @@ export class UserController implements Controller {
   );
 
   private getUser = asyncHandler(
-    async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    async (req: RequestWithUser, res: Response, _next: NextFunction): Promise<void> => {
       const { password, ...user } = req.user;
       res.send(user);
     }
