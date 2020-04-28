@@ -6,7 +6,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 
 import { User } from '.';
 import { validationMiddleware } from '../middleware';
-import { CreateUserDto, LoginUserDto } from './dtos';
+import { CreateUserDto, LoginUserDto } from './dto';
 import { Controller, TokenData } from '../interfaces';
 import { EmailTakenError, WeakPasswordError, WrongCredsError } from '../errors';
 
