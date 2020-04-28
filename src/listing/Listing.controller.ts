@@ -40,6 +40,7 @@ export class ListingController implements Controller {
         next(new MinVolumeError());
       }
       const listing = this.listingRepo.create({ ...listingData, owner: req.user, active: true });
+      listing.owner.password = undefined;
       res.send(await this.listingRepo.save(listing));
     }
   );
