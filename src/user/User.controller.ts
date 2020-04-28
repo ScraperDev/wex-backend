@@ -60,7 +60,7 @@ export class UserController implements Controller {
   );
 
   private createToken(user: User): string {
-    const expiresIn = 60 * 60 * 24; // One Day
+    const expiresIn = 60 * 60 * 24 * 7; // ~ One Week
     const secret = process.env.JWT_SECRET;
     const dataStoredInToken: TokenData = {
       id: user.id,
