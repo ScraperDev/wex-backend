@@ -6,7 +6,7 @@ import { Listing } from '.';
 import { CreateListingDto } from './dto';
 import { RequestWithUser, Controller } from '../interfaces';
 import { authMiddleware, validationMiddleware } from '../middleware';
-import { MinVolumeError } from 'src/errors/MinVolume.error';
+import { MinVolumeError } from '../errors';
 
 export class ListingController implements Controller {
   public path = '/listing';
