@@ -12,7 +12,7 @@ import { ListingController } from './listing/Listing.controller';
   validateEnv();
 
   // if this throws, the app's dead in the water anyway.
-  await createConnection(ormConfig);
+  await createConnection(ormConfig());
   console.log('Database Connected');
   const app = new App([new UserController(), new ListingController()]);
   app.listen();
