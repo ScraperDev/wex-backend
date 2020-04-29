@@ -74,6 +74,6 @@ export class UserController implements Controller {
       id: user.id,
       name: user.name,
     };
-    return signJwt(dataStoredInToken, secret, { expiresIn });
+    return 'Bearer ' + signJwt(dataStoredInToken, secret, { expiresIn });
   }
 }
