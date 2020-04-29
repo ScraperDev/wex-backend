@@ -7,6 +7,9 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
+  @Column({ default: false })
+  public admin: boolean;
+
   @Column()
   public name: string;
 
