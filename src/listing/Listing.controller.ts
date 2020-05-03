@@ -19,7 +19,7 @@ export class ListingController implements Controller {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/`, authMiddleware, this.getActiveListings);
+    this.router.get(`${this.path}/`, authMiddleware, this.getListings);
     this.router.get(`${this.path}/:listingId`, authMiddleware, this.getOneListing);
     this.router.post(
       `${this.path}/`,
@@ -29,17 +29,18 @@ export class ListingController implements Controller {
     );
   }
 
-  private getActiveListings = asyncHandler(
-    async (_req: RequestWithUser, res: Response, _next: NextFunction): Promise<void> => {
+  private getListings = asyncHandler(
+    async (req: RequestWithUser, res: Response, _next: NextFunction): Promise<void> => {
       const listings = await this.listingRepo.find({
-        where: { active: true },
         relations: ['owner'],
       });
 
       const response = listings.map((listing) => {
-        const ownerId = listing.owner.id;
-        listing.owner = undefined;
-        return { ...listing, ownerId };
+        if (req.user.id === listing.owner.id || listing.active) {
+          const ownerId = listing.owner.id;
+          listing.owner = undefined;
+          return { ...listing, ownerId };
+        }
       });
 
       res.send(response);
