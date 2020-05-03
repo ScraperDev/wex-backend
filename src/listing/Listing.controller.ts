@@ -7,6 +7,7 @@ import { CreateListingDto } from './dto';
 import { RequestWithUser, Controller } from '../interfaces';
 import { MinVolumeError, ListingNotFoundError } from '../errors';
 import { authMiddleware, validationMiddleware } from '../middleware';
+import { User } from '../user';
 
 export class ListingController implements Controller {
   public path = '/listing';
@@ -30,20 +31,34 @@ export class ListingController implements Controller {
 
   private getActiveListings = asyncHandler(
     async (_req: RequestWithUser, res: Response, _next: NextFunction): Promise<void> => {
-      res.send(await this.listingRepo.find({ where: { active: true } }));
+      const listings = await this.listingRepo.find({
+        where: { active: true },
+        relations: ['owner'],
+      });
+
+      const response = listings.map((listing) => {
+        const ownerId = listing.owner.id;
+        listing.owner = undefined;
+        return { ...listing, ownerId };
+      });
+
+      res.send(response);
     }
   );
 
   private getOneListing = asyncHandler(
     async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
       try {
-        const listing = await this.listingRepo.findOneOrFail(req.params.listingId);
+        const listing = await this.listingRepo.findOneOrFail(req.params.listingId, {
+          relations: ['owner'],
+        });
         if (!listing.active && req.user.id !== listing.owner.id) {
           next(new ListingNotFoundError());
           return;
         }
+        const ownerId = listing.owner.id;
         listing.owner = undefined;
-        res.send(listing);
+        res.send({ ...listing, ownerId });
       } catch {
         next(new ListingNotFoundError());
       }
@@ -57,8 +72,9 @@ export class ListingController implements Controller {
         next(new MinVolumeError());
       }
       const listing = this.listingRepo.create({ ...listingData, owner: req.user, active: true });
-      listing.owner.password = undefined;
-      res.send(await this.listingRepo.save(listing));
+      const ownerId = listing.owner.id;
+      listing.owner = undefined;
+      res.send({ ...(await this.listingRepo.save(listing)), ownerId });
     }
   );
 }
